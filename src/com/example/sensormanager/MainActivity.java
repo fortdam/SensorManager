@@ -27,6 +27,7 @@ public class MainActivity extends Activity {
     
     public void onResume(){
     	final Intent intent = new Intent(this, SensorActivity.class);
+    	final Intent intent1 = new Intent(this, AppStepCounterActivity.class);
     	
     	ExpandableListView list = (ExpandableListView)findViewById(R.id.sensor_list);
     	list.setAdapter(new SensorListAdapter(this.getApplicationContext()));
@@ -42,6 +43,19 @@ public class MainActivity extends Activity {
 				intent.putExtras(data);
 				startActivity(intent);
 				return true;
+			}
+		});
+    	
+    	list.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+
+			@Override
+			public boolean onGroupClick(ExpandableListView parent, View v,
+					int groupPosition, long id) {
+				if (id == 0x9988){ // special case
+					startActivity(intent1);
+					return true;
+				}
+				return false;
 			}
 		});
     	super.onResume();

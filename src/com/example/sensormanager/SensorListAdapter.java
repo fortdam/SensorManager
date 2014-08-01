@@ -13,18 +13,23 @@ public class SensorListAdapter extends BaseExpandableListAdapter {
 	
 	public SensorListAdapter(Context ctx){
 		mAppCntx = ctx;
-		mSensorManager = SensorInfo.getInstance(ctx);
+		mSensorHub = SensorHub.getInstance(ctx);
 	}
 
 	@Override
 	public int getGroupCount() {
 		// TODO Auto-generated method stub
-		return SENSOR_LIST.length;
+		return SENSOR_LIST.length + 1;
 	}
 	@Override
 	public int getChildrenCount(int groupPosition) {
 		// TODO Auto-generated method stub
-		return mSensorManager.SensorNum(SENSOR_LIST[groupPosition]);
+		if (groupPosition >= SENSOR_LIST.length){
+			return 0;
+		}
+		else {
+			return mSensorHub.SensorNum(SENSOR_LIST[groupPosition]);
+		}
 	}
 	@Override
 	public Object getGroup(int groupPosition) {
@@ -39,7 +44,12 @@ public class SensorListAdapter extends BaseExpandableListAdapter {
 	@Override
 	public long getGroupId(int groupPosition) {
 		// TODO Auto-generated method stub
-		return groupPosition;
+		if (groupPosition == SENSOR_LIST.length) {
+			return 0x9988;
+		}
+		else {
+			return groupPosition;
+		}
 	}
 	@Override
 	public long getChildId(int groupPosition, int childPosition) {
@@ -61,18 +71,25 @@ public class SensorListAdapter extends BaseExpandableListAdapter {
 			item = new TextView(mAppCntx);
 		}
 		
-		item.setText(sensorName(SENSOR_LIST[groupPosition]));
-		item.setTextSize(20f);
-		
-		if (mSensorManager.SensorNum(SENSOR_LIST[groupPosition])>0){
-			item.setTextColor(0xFF000000);
-			item.setText(sensorName(SENSOR_LIST[groupPosition]) + "(Avail)");
-			item.setPadding(70, 0, 0, 0);
+		if (groupPosition < SENSOR_LIST.length) {
+			item.setText(sensorName(SENSOR_LIST[groupPosition]));
+			item.setTextSize(20f);
+			
+			if (mSensorHub.SensorNum(SENSOR_LIST[groupPosition])>0){
+				item.setTextColor(0xFF000000);
+				item.setText(sensorName(SENSOR_LIST[groupPosition]) + "(Avail)");
+				item.setPadding(70, 0, 0, 0);
+			}
+			else {
+				item.setTextColor(0xFF777777);
+				item.setText(sensorName(SENSOR_LIST[groupPosition]) + "(N/A)");		
+				item.setPadding(70, 0, 0, 0);
+			}
 		}
 		else {
-			item.setTextColor(0xFF777777);
-			item.setText(sensorName(SENSOR_LIST[groupPosition]) + "(N/A)");		
-			item.setPadding(70, 0, 0, 0);
+				item.setText("TCL software pedrometer");
+				item.setTextSize(20f);
+				item.setPadding(70, 0, 0, 0);
 		}
 		
 		return item;
@@ -87,7 +104,7 @@ public class SensorListAdapter extends BaseExpandableListAdapter {
 			item = new TextView(mAppCntx);
 		}
 		
-		item.setText(mSensorManager.getSensor(SENSOR_LIST[groupPosition], childPosition).getName());
+		item.setText(mSensorHub.getSensor(SENSOR_LIST[groupPosition], childPosition).getName());
 		item.setTextSize(18f);
 		item.setPadding(100, 0, 0, 0);
 
@@ -193,5 +210,5 @@ public class SensorListAdapter extends BaseExpandableListAdapter {
 	}
 
 	private Context mAppCntx;
-	private SensorInfo mSensorManager;
+	private SensorHub mSensorHub;
 }

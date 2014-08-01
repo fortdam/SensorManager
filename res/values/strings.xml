@@ -5,5 +5,12 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_sensor">SensorActivity</string>
     <string name="sensor">Sensor</string>
+    <string name="ClearText">Clear\nConsole</string>
+    <string name="ClearFile">Remove\nFile</string>
+    <string name="title_activity_app_step_counter">AppStepCounterActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="AppStepCounter">App Step Counter</string>
+    <string name="ClearStep">Clear\nSteps</string>
+    <string name="StepCounter">App-level Step Counter</string>
 
 </resources>
